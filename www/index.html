@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="bootstrap.css">
+</head>
+<body>    
+    <div class="container">
+        <h2 class="text-primary my-2">Prikaz osoba</h2>
+        <div id="prikaz">
+            
+        </div>
+    </div>
+
+
+    <script src="bootstrap.js"></script>
+    <script src="jquery.js"></script>
+    <script>
+        
+        $(document).ready(() => {
+            $.ajax({
+                url: "/sveOsobe",
+                type: "POST",
+                dataType: "json",
+                success: (response) => {
+                    prikazPodataka(response);
+                }
+            });
+        });
+        function prikazPodataka(response){
+            let divPrikaz = document.querySelector("#prikaz");
+            if (response.length == 0){
+                divPrikaz.innerHTML = `
+                    <div class="alert alert-info p-3">
+                        Trenutno nema osoba!
+                    </div>
+                `;
+            }
+            else {
+                let html = ``;
+                html += `
+                <table class="table border">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Ime</th>
+                            <th scope="col">Prezime</th>
+                            <th scope="col">Mesto rodjenja</th>
+                            <th scope="col">Pogled / Brisanje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                `;
+                for (let i=0; i<response.length;i++){
+                    html += `
+                        <tr>
+                            <td>${response[i].id}</td>
+                            <td>${response[i].ime}</td>
+                            <td>${response[i].prezime}</td>
+                            <td>${response[i].mestoRodjenja}</td>
+                            <td>
+                                <button type="button" class="btn btn-info btn-small" 
+                                onclick="prikazOsobeModal('${response[i].id}')">Pogled</button>
+                                <button type="button" class="btn btn-danger btn-small" 
+                                    onclick="brisanjeOsobe('${response[i].id}')">Brisanje</button>
+                            </td>
+                        </tr>
+                    `;
+                }
+                html += `
+                        </tbody>
+                    </table>
+                `;
+                divPrikaz.innerHTML = html;
+            }
+        }
+        function prikazOsobeModal(id){
+            $.ajax({
+                url: "/osoba?id=" + id,
+                type: "GET",
+                dataType: "json",
+                success: (response) => {
+                    alert(
+                        'Id:' + response.id + '\n'+
+                        'Ime:' + response.ime + '\n'+
+                        'Prezime:' + response.prezime + '\n'+
+                        'Mesto rodjenja:' + response.mestoRodjenja
+                    );
+                }
+            });
+        }
+        function brisanjeOsobe(id){
+            if(confirm("Brisanje traje 3 sekunde. Da li ste sigurni da zelite da obrisete osobu?")){
+                $.ajax({
+                    url: "/brisanjeOsobe?id=" + id,
+                    type: "POST",
+                    dataType: "json",
+                    success: (response) => {
+                        prikazPodataka(response);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
