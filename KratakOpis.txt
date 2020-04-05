@@ -1,0 +1,13 @@
+Zadatak sadrzi GET metode za dohvatanje statickih fajlova kao sto su css,js...
+Takodje napravio sam GET metodu za prikaz podataka o Osobi u 'alert'-u uz pomoc 'ajax'-a('/osoba?id=x')
+
+Za POST metode sam iskoristio tako sto sam uz pomoc 'ajax'-a  pozivao rutu za dohvatanje svih Osoba('/sveOsobe') i
+takodje uz pomoc 'ajax'-a pozivanje rute za brisanje odredjene Osobe po id-u('/brisanjeOsobe?id=x')
+
+Sto se tice tajmera i rucno kreiranog dogadjaja, to sam odradio prilikom brisanja tako sto se brisanje izvrsi
+nakon isteka 3 sekunde. Obavestenje koliko sekundi je proslo se ispisuje na serverskoj konzoli. Prilikom pozivanja
+funkcije za brisanje sa klijentske strane prikazuje se 'confirm' prozor na kome pise da ce brisanje Osobe
+trajati 3 sekunde kao i pitanje da li ste sigurni da zelite da obrisete Osobu
+
+Dodao sam i jednog klijenta napisanog u javascriptu koji testira brisanje Osoba
+
